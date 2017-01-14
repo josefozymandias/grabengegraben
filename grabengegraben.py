@@ -14,6 +14,7 @@ clock = pygame.time.Clock()
 BLACK = (  0,   0,   0)
 CYAN  = (  0, 255, 255)
 RED   = (255,   0,   0)
+BLUE  = (  0,   0, 255)
 line_spacing = 25
 player_x = 10
 player_y = 14
