@@ -18,6 +18,11 @@ BLUE  = (  0,   0, 255)
 line_spacing = 25
 player_x = 10
 player_y = 14
+map = []
+for y in range(100):
+	map.append([])
+	for x in range(100):
+		map[y].append(0)
 
 def draw_grid(screen, width, height, line_spacing, color):
 	for x in range(0, width, line_spacing):
