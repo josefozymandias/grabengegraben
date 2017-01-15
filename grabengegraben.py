@@ -19,9 +19,9 @@ line_spacing = 25
 player_x = 10
 player_y = 14
 map = []
-for y in range(100):
+for y in range(50):
 	map.append([])
-	for x in range(100):
+	for x in range(50):
 		map[y].append(0)
 
 def draw_grid(screen, width, height, line_spacing, color):
@@ -30,6 +30,24 @@ def draw_grid(screen, width, height, line_spacing, color):
 	for y in range(0, height, line_spacing):
 		pygame.draw.line(screen, color, (0,y),(width-1,y))
 
+def draw_square(x, y, size):
+	for i in range(size):
+		map[y][x + i] = 1
+		map[y+size-1][x + i] = 1
+		map[y + i][x] = 1
+		map[y + i][x+size-1] = 1
+
+def print_map():
+	line = ""
+	for y in range(len(map)):
+		for x in range(len(map[y])):
+			if map[y][x] == 0: line += ' '
+			elif map[y][x] == 1: line += '#'
+		print(line)
+		line = ""
+
+draw_square(5, 5, 10)
+print_map()
 while True:
 	clock.tick(30)
 	keys = pygame.key.get_pressed()
