@@ -2,13 +2,14 @@ import pygame
 from pygame.locals import *
 import sys
 from random import randint, seed
+from os import listdir
 
 pygame.init()
 
 size = width, height = 1920, 1080 
 screen = pygame.display.set_mode(size,FULLSCREEN)
 pygame.display.set_caption("Graben Gegraben")
-
+pygame.mouse.set_visible(False)
 clock = pygame.time.Clock()
 
 BLACK = (  0,   0,   0)
@@ -18,8 +19,8 @@ BLUE  = (  0,   0, 255)
 GREEN = (  0, 255,   0)
 MAGENTA= (255,   0, 255)
 line_spacing = 20
-player_x = 43
-player_y = 23
+player_x = 0
+player_y = 0
 x_max = width / line_spacing 
 y_max = height / line_spacing
 map = []
@@ -68,20 +69,24 @@ def draw_square(x,y,color):
 	pygame.draw.rect(screen,color,(x*ls, y*ls, ls, ls))		 
 
 def draw_map():
+	global item_images
 	for y in range(len(map)):
 		for x in range(len(map[y])):
 			if map[y][x] == 1:
 				draw_square(x,y,BLUE)
-			elif map[y][x] == 2:
-				draw_square(x,y,MAGENTA)
+			elif map[y][x] >= 50:
+				#draw_square(x,y,MAGENTA)
+				screen.blit(item_images[map[y][x]-50], (x * line_spacing, y * line_spacing))
 
 def rand_rooms():
 	for i in range(60):
 		make_room(randint(0,x_max-max_room_size),randint(0,y_max-max_room_size),randint(min_room_size, max_room_size))
 
 def rand_items():
-	for i in range(20):
-		map[randint(0,y_max-1)][randint(0,x_max-1)] = 2
+	global item_images
+	num = len(item_images)-1
+	for i in range(60):
+		map[randint(0,y_max-1)][randint(0,x_max-1)] = 50 + randint(0,num) 
 
 def new_map(seed_val):
 	global map
@@ -90,10 +95,22 @@ def new_map(seed_val):
 	init_map()
 	rand_items()
 	rand_rooms()
+
+item_images = []
+file_names = listdir("tiles/items")
+#print(file_names)
+for file_name in file_names:
+	name = "tiles/items/" + file_name
+	item_images.append(pygame.image.load(name))
+
+for item_image in item_images:
+	item_image.set_colorkey(MAGENTA)
+
+#print(item_images)
 	
 seed_val = 1337
 new_map(seed_val)
-print_map()
+#print_map()
 while True:
 	clock.tick(20)
 	keys = pygame.key.get_pressed()
