@@ -18,8 +18,8 @@ BLUE  = (  0,   0, 255)
 GREEN = (  0, 255,   0)
 MAGENTA= (255,   0, 255)
 line_spacing = 20
-player_x = 10
-player_y = 14
+player_x = 43
+player_y = 23
 x_max = width / line_spacing 
 y_max = height / line_spacing
 map = []
@@ -83,15 +83,16 @@ def rand_items():
 	for i in range(20):
 		map[randint(0,y_max-1)][randint(0,x_max-1)] = 2
 
-def new_map():
+def new_map(seed_val):
 	global map
 	map = []
+	seed(seed_val)
 	init_map()
 	rand_items()
 	rand_rooms()
 	
-#seed(1337)
-new_map()
+seed_val = 1337
+new_map(seed_val)
 print_map()
 while True:
 	clock.tick(20)
@@ -99,21 +100,33 @@ while True:
 	if keys[K_ESCAPE]: sys.exit()
 	if keys[K_w]:
 		player_y -= 1
-		if player_y < 0: player_y = 0 
+		if player_y < 0: 
+			player_y = y_max-1
+			seed_val += 10000
+			new_map(seed_val) 
 		if map[player_y][player_x] == 1: player_y += 1
 	if keys[K_r]: 
 		player_y += 1
-		if player_y >= y_max-1: player_y = y_max-1
+		if player_y >= y_max-1: 
+			player_y = 0
+			seed_val -= 10000
+			new_map(seed_val) 
 		if map[player_y][player_x] == 1: player_y -= 1
 	if keys[K_a]: 
 		player_x -= 1
-		if player_x < 0: player_x = 0
+		if player_x < 0:
+			player_x = x_max - 1
+			seed_val += 1
+			new_map(seed_val)
 		if map[player_y][player_x] == 1: player_x += 1
 	if keys[K_s]: 
 		player_x += 1
-		if player_x >= x_max-1: player_x = x_max-1
+		if player_x >= x_max-1: 
+			player_x = 0
+			seed_val -= 1
+			new_map(seed_val)
 		if map[player_y][player_x] == 1: player_x -= 1
-	if keys[K_F1]: new_map()
+	#if keys[K_F1]: new_map()
 
 	#if player_y < 0: player_y = 0
 	#if player_x < 0: player_x = 0
