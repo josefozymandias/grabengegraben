@@ -64,14 +64,14 @@ def print_map():
 
 def draw_square(x,y,color):
 	ls = line_spacing
-	pygame.draw.rect(screen,color,(x*ls+1, y*ls+1, ls-1, ls-1))
-			 
+	#pygame.draw.rect(screen,color,(x*ls+1, y*ls+1, ls-1, ls-1))
+	pygame.draw.rect(screen,color,(x*ls, y*ls, ls, ls))		 
 
 def draw_map():
 	for y in range(len(map)):
 		for x in range(len(map[y])):
 			if map[y][x] == 1:
-				draw_square(x,y,GREEN)
+				draw_square(x,y,BLUE)
 			elif map[y][x] == 2:
 				draw_square(x,y,MAGENTA)
 
@@ -137,7 +137,7 @@ while True:
 		if event.type == pygame.QUIT: sys.exit()
 
 
-	screen.fill(BLACK)
+	screen.fill(GREEN)
 	#draw_grid(screen, width, height, line_spacing, CYAN)
 	draw_map()
 	draw_square(player_x,player_y,RED)
