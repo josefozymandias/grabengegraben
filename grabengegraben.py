@@ -69,11 +69,14 @@ def draw_square(x,y,color):
 	pygame.draw.rect(screen,color,(x*ls, y*ls, ls, ls))		 
 
 def draw_map():
-	global item_images
+	global item_images, cobblestone,lava
 	for y in range(len(map)):
 		for x in range(len(map[y])):
+			#if map[y][x] == 0:
+			#	screen.blit(cobblestone, (x * line_spacing, y * line_spacing))
 			if map[y][x] == 1:
-				draw_square(x,y,BLUE)
+				#draw_square(x,y,BLUE)
+				screen.blit(lava, (x*line_spacing, y*line_spacing))
 			elif map[y][x] >= 50:
 				#draw_square(x,y,MAGENTA)
 				screen.blit(item_images[map[y][x]-50], (x * line_spacing, y * line_spacing))
@@ -98,6 +101,10 @@ def new_map(seed_val):
 
 item_images = []
 file_names = listdir("tiles/items")
+cobblestone = pygame.image.load("tiles/items/cobblestone.bmp")
+lava = pygame.image.load("tiles/items/lava.bmp")
+goldsamurai = pygame.image.load("tiles/items/goldsamurai.bmp")
+goldsamurai.set_colorkey(MAGENTA)
 #print(file_names)
 for file_name in file_names:
 	name = "tiles/items/" + file_name
@@ -154,8 +161,11 @@ while True:
 		if event.type == pygame.QUIT: sys.exit()
 
 
-	screen.fill(GREEN)
+	#screen.fill(GREEN)
 	#draw_grid(screen, width, height, line_spacing, CYAN)
+	for y in range(y_max):
+		for x in range(x_max):
+			screen.blit(cobblestone, (x*line_spacing, y*line_spacing))
 	draw_map()
-	draw_square(player_x,player_y,RED)
+	screen.blit(goldsamurai, (player_x*line_spacing, player_y*line_spacing))	
 	pygame.display.flip()
