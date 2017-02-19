@@ -6,8 +6,10 @@ from os import listdir
 
 pygame.init()
 
-size = width, height = 1920, 1080 
+size = width, height = 1920, 1080
+#size = width, height = 800, 600
 screen = pygame.display.set_mode(size,FULLSCREEN)
+#screen = pygame.display.set_mode(size)
 pygame.display.set_caption("Graben Gegraben")
 pygame.mouse.set_visible(False)
 clock = pygame.time.Clock()
@@ -21,8 +23,8 @@ MAGENTA= (255,   0, 255)
 line_spacing = 20
 player_x = 0
 player_y = 0
-x_max = width / line_spacing 
-y_max = height / line_spacing
+x_max = width // line_spacing 
+y_max = height // line_spacing
 map = []
 map_size = 75
 min_room_size = 5
@@ -82,7 +84,7 @@ def draw_map():
 				screen.blit(item_images[map[y][x]-50], (x * line_spacing, y * line_spacing))
 
 def rand_rooms():
-	for i in range(60):
+	for i in range(20):
 		make_room(randint(0,x_max-max_room_size),randint(0,y_max-max_room_size),randint(min_room_size, max_room_size))
 
 def rand_items():
@@ -122,6 +124,7 @@ while True:
 	clock.tick(20)
 	keys = pygame.key.get_pressed()
 	if keys[K_ESCAPE]: sys.exit()
+	#if keys[K_ESCAPE]: break
 	if keys[K_w]:
 		player_y -= 1
 		if player_y < 0: 
@@ -129,7 +132,7 @@ while True:
 			seed_val += 10000
 			new_map(seed_val) 
 		if map[player_y][player_x] == 1: player_y += 1
-	if keys[K_r]: 
+	if keys[K_s]: 
 		player_y += 1
 		if player_y >= y_max-1: 
 			player_y = 0
@@ -143,7 +146,7 @@ while True:
 			seed_val += 1
 			new_map(seed_val)
 		if map[player_y][player_x] == 1: player_x += 1
-	if keys[K_s]: 
+	if keys[K_d]: 
 		player_x += 1
 		if player_x >= x_max-1: 
 			player_x = 0
