@@ -91,7 +91,7 @@ def rand_items():
 	global item_images
 	num = len(item_images)-1
 	for i in range(60):
-		map[randint(0,y_max-1)][randint(0,x_max-1)] = 50 + randint(0,num) 
+		map[randint(0,y_max-1)][randint(0,x_max-1)] = 50 + randint(0,num)
 
 def new_map(seed_val):
 	global map
@@ -107,6 +107,14 @@ cobblestone = pygame.image.load("tiles/items/cobblestone.bmp")
 lava = pygame.image.load("tiles/items/lava.bmp")
 goldsamurai = pygame.image.load("tiles/items/goldsamurai.bmp")
 goldsamurai.set_colorkey(MAGENTA)
+flame_north = pygame.image.load("tiles/effects/flame_north.bmp")
+flame_north.set_colorkey(MAGENTA)
+flame_south = pygame.image.load("tiles/effects/flame_south.bmp")
+flame_south.set_colorkey(MAGENTA)
+flame_east = pygame.image.load("tiles/effects/flame_east.bmp")
+flame_east.set_colorkey(MAGENTA)
+flame_west = pygame.image.load("tiles/effects/flame_west.bmp")
+flame_west.set_colorkey(MAGENTA)
 #print(file_names)
 for file_name in file_names:
 	name = "tiles/items/" + file_name
@@ -116,16 +124,20 @@ for item_image in item_images:
 	item_image.set_colorkey(MAGENTA)
 
 #print(item_images)
-
+NORTH, SOUTH, EAST, WEST = 0, 1, 2, 3
+player_dir = EAST
 seed_val = 1337
 new_map(seed_val)
+attack = False
 #print_map()
 while True:
 	clock.tick(20)
 	keys = pygame.key.get_pressed()
 	if keys[K_ESCAPE]: sys.exit()
 	#if keys[K_ESCAPE]: break
+	if keys[K_SPACE]: attack = True
 	if keys[K_w]:
+		player_dir = NORTH
 		player_y -= 1
 		if player_y < 0:
 			player_y = y_max-1
@@ -133,6 +145,7 @@ while True:
 			new_map(seed_val)
 		if map[player_y][player_x] == 1: player_y += 1
 	if keys[K_s]:
+		player_dir = SOUTH
 		player_y += 1
 		if player_y >= y_max-1:
 			player_y = 0
@@ -140,6 +153,7 @@ while True:
 			new_map(seed_val)
 		if map[player_y][player_x] == 1: player_y -= 1
 	if keys[K_a]:
+		player_dir = WEST
 		player_x -= 1
 		if player_x < 0:
 			player_x = x_max - 1
@@ -147,6 +161,7 @@ while True:
 			new_map(seed_val)
 		if map[player_y][player_x] == 1: player_x += 1
 	if keys[K_d]:
+		player_dir = EAST
 		player_x += 1
 		if player_x >= x_max-1:
 			player_x = 0
@@ -171,4 +186,14 @@ while True:
 			screen.blit(cobblestone, (x*line_spacing, y*line_spacing))
 	draw_map()
 	screen.blit(goldsamurai, (player_x*line_spacing, player_y*line_spacing))
+	if attack:
+		if player_dir == NORTH:
+			screen.blit(flame_north, (player_x*line_spacing,(player_y-1)*line_spacing))
+		elif player_dir == SOUTH:
+			screen.blit(flame_south, (player_x*line_spacing,(player_y+1)*line_spacing))
+		elif player_dir == EAST:
+			screen.blit(flame_east, ((player_x+1)*line_spacing,player_y*line_spacing))
+		elif player_dir == WEST:
+			screen.blit(flame_west, ((player_x-1)*line_spacing,player_y*line_spacing))
+		attack = False
 	pygame.display.flip()
