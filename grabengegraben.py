@@ -23,12 +23,12 @@ MAGENTA= (255,   0, 255)
 line_spacing = 20
 player_x = 0
 player_y = 0
-x_max = width // line_spacing 
+x_max = width // line_spacing
 y_max = height // line_spacing
 map = []
 map_size = 75
 min_room_size = 5
-max_room_size = 10 
+max_room_size = 10
 def init_map():
 	for y in range(y_max):
 		map.append([])
@@ -68,7 +68,7 @@ def print_map():
 def draw_square(x,y,color):
 	ls = line_spacing
 	#pygame.draw.rect(screen,color,(x*ls+1, y*ls+1, ls-1, ls-1))
-	pygame.draw.rect(screen,color,(x*ls, y*ls, ls, ls))		 
+	pygame.draw.rect(screen,color,(x*ls, y*ls, ls, ls))
 
 def draw_map():
 	global item_images, cobblestone,lava
@@ -84,7 +84,7 @@ def draw_map():
 				screen.blit(item_images[map[y][x]-50], (x * line_spacing, y * line_spacing))
 
 def rand_rooms():
-	for i in range(20):
+	for i in range(60):
 		make_room(randint(0,x_max-max_room_size),randint(0,y_max-max_room_size),randint(min_room_size, max_room_size))
 
 def rand_items():
@@ -116,7 +116,7 @@ for item_image in item_images:
 	item_image.set_colorkey(MAGENTA)
 
 #print(item_images)
-	
+
 seed_val = 1337
 new_map(seed_val)
 #print_map()
@@ -127,28 +127,28 @@ while True:
 	#if keys[K_ESCAPE]: break
 	if keys[K_w]:
 		player_y -= 1
-		if player_y < 0: 
+		if player_y < 0:
 			player_y = y_max-1
 			seed_val += 10000
-			new_map(seed_val) 
+			new_map(seed_val)
 		if map[player_y][player_x] == 1: player_y += 1
-	if keys[K_s]: 
+	if keys[K_s]:
 		player_y += 1
-		if player_y >= y_max-1: 
+		if player_y >= y_max-1:
 			player_y = 0
 			seed_val -= 10000
-			new_map(seed_val) 
+			new_map(seed_val)
 		if map[player_y][player_x] == 1: player_y -= 1
-	if keys[K_a]: 
+	if keys[K_a]:
 		player_x -= 1
 		if player_x < 0:
 			player_x = x_max - 1
 			seed_val += 1
 			new_map(seed_val)
 		if map[player_y][player_x] == 1: player_x += 1
-	if keys[K_d]: 
+	if keys[K_d]:
 		player_x += 1
-		if player_x >= x_max-1: 
+		if player_x >= x_max-1:
 			player_x = 0
 			seed_val -= 1
 			new_map(seed_val)
@@ -157,7 +157,7 @@ while True:
 
 	#if player_y < 0: player_y = 0
 	#if player_x < 0: player_x = 0
-	#if player_x > x_max: player_x = x_max 
+	#if player_x > x_max: player_x = x_max
 	#if player_y > y_max: player_y = y_max
 
 	for event in pygame.event.get():
@@ -170,5 +170,5 @@ while True:
 		for x in range(x_max):
 			screen.blit(cobblestone, (x*line_spacing, y*line_spacing))
 	draw_map()
-	screen.blit(goldsamurai, (player_x*line_spacing, player_y*line_spacing))	
+	screen.blit(goldsamurai, (player_x*line_spacing, player_y*line_spacing))
 	pygame.display.flip()
