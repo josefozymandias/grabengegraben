@@ -20,15 +20,15 @@ RED   = (255,   0,   0)
 BLUE  = (  0,   0, 255)
 GREEN = (  0, 255,   0)
 MAGENTA= (255,   0, 255)
-line_spacing = 20
+line_spacing = 40
 player_x = 0
 player_y = 0
 x_max = width // line_spacing
 y_max = height // line_spacing
 map = []
 map_size = 75
-min_room_size = 5
-max_room_size = 10
+min_room_size = 2
+max_room_size = 5
 def init_map():
 	for y in range(y_max):
 		map.append([])
@@ -84,7 +84,7 @@ def draw_map():
 				screen.blit(item_images[map[y][x]-50], (x * line_spacing, y * line_spacing))
 
 def rand_rooms():
-	for i in range(60):
+	for i in range(40):
 		make_room(randint(0,x_max-max_room_size),randint(0,y_max-max_room_size),randint(min_room_size, max_room_size))
 
 def rand_items():
@@ -104,21 +104,29 @@ def new_map(seed_val):
 item_images = []
 file_names = listdir("tiles/items")
 cobblestone = pygame.image.load("tiles/items/cobblestone.bmp")
+cobblestone = pygame.transform.scale2x(cobblestone)
 lava = pygame.image.load("tiles/items/lava.bmp")
+lava = pygame.transform.scale2x(lava)
 goldsamurai = pygame.image.load("tiles/items/goldsamurai.bmp")
 goldsamurai.set_colorkey(MAGENTA)
+goldsamurai = pygame.transform.scale2x(goldsamurai)
 flame_north = pygame.image.load("tiles/effects/flame_north.bmp")
 flame_north.set_colorkey(MAGENTA)
+flame_north = pygame.transform.scale2x(flame_north)
 flame_south = pygame.image.load("tiles/effects/flame_south.bmp")
 flame_south.set_colorkey(MAGENTA)
+flame_south = pygame.transform.scale2x(flame_south)
 flame_east = pygame.image.load("tiles/effects/flame_east.bmp")
 flame_east.set_colorkey(MAGENTA)
+flame_east = pygame.transform.scale2x(flame_east)
 flame_west = pygame.image.load("tiles/effects/flame_west.bmp")
 flame_west.set_colorkey(MAGENTA)
+flame_west = pygame.transform.scale2x(flame_west)
+
 #print(file_names)
 for file_name in file_names:
 	name = "tiles/items/" + file_name
-	item_images.append(pygame.image.load(name))
+	item_images.append(pygame.transform.scale2x(pygame.image.load(name)))
 
 for item_image in item_images:
 	item_image.set_colorkey(MAGENTA)
